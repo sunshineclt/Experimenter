@@ -1,9 +1,11 @@
-runloop = PCRunloop(@(obj)GetSecs()-obj.startTime>3);
-zPressed = PCEvent('zPressed',keyboardPressedFireJudgerBuilder('z'),runloop);
+runloop = PCRunloop(@(obj)GetSecs()-obj.startTime>5);
+zPressed = PCEvent('zPressed',PCKeyboardPressedFireJudgerBuilder('z'),true);
 runloop.register(zPressed, @()disp('z Pressed!'));
 runloop.register(zPressed, @()disp('z Pressed!!'));
-xPressed = PCEvent('xPressed',keyboardPressedFireJudgerBuilder('x'),runloop);
+xPressed = PCEvent('xPressed',PCKeyboardPressedFireJudgerBuilder('x'),true);
 runloop.register(xPressed, @()disp('x Pressed!'));
-timeReached = PCEvent('2sReached', @(obj)GetSecs()-obj.startTime>2, runloop);
-runloop.register(timeReached, @()disp('2s Reached!!'));
+second2Reached = PCEvent('2sReached', PCTimeReachedFireJudgerBuilder(2),false);
+runloop.register(second2Reached, @()disp('2s Reached!!'));
+second1Reached = PCEvent('3sReached', PCTimeReachedFireJudgerBuilder(1),false);
+runloop.register(second1Reached, @()disp('1s Reached!!'));
 runloop.run();

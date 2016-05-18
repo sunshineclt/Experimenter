@@ -3,14 +3,14 @@ function [ w, rect ] = setUp( isFullScreen )
 % @param isFullScreen is full screen mode or not
 
 global SCREEN_SIZE_INCH VIEW_DISTANCE
-SCREEN_SIZE_INCH = 13;
-VIEW_DISTANCE = 60;
+SCREEN_SIZE_INCH = 19;
+VIEW_DISTANCE = 80;
 Screen('Preference', 'SkipSyncTests', 1);
 InitializeMatlabOpenGL;
 if (isFullScreen)
-    [w, rect]=Screen('OpenWindow', 0, [0 0 0]);
+    [w, rect]=Screen('OpenWindow', 0, [80 80 80]);
 else
-    [w, rect]=Screen('OpenWindow', 0, [0 0 0], [0 0 400 400]);
+    [w, rect]=Screen('OpenWindow', 0, [80 80 80], [0 0 600 600]);
 end
 Screen('TextFont', w, 'Calibri');
 Screen('TextSize', w, 18);

@@ -26,14 +26,12 @@ function main()
         % if direction == -1, it means no specific direction needed
         % if direction == 0, it means the change must happen on the left
         % if direction == 1, it means the change must happen on the right
-        % and also the change can not happen on the 6th and 18th disk
-        % because the 6th disk is the nearest disk to the left target
-        % and the 18th disk is the nearest disk to the right target
+        % and also when it has direction the change can not happen on the 
+        % 6th and 18th disk because the 6th disk is the nearest disk to the
+        % left target and the 18th disk is the nearest disk to the right
+        % target
         if direction == -1
             diskToChange = randi(18);
-            while (diskToChange == 6) || (diskToChange == 13)
-                diskToChange = randi(18);
-            end
         elseif direction == 0
             diskToChange = randi(9);
             while (diskToChange == 6)

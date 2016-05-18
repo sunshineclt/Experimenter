@@ -125,7 +125,7 @@ function main()
     function zPressed()
         disp('z pressed');
         % record this trial's response
-        response = 0;
+        response = 1;
         % after participants' response, the listener should be destroyed
         destroyKeyListener();
     end
@@ -133,7 +133,7 @@ function main()
     function mPressed()
         disp('m pressed');
         % record this trial's response        
-        response = 1;
+        response = 2;
         % after participants' response, the listener should be destroyed        
         destroyKeyListener();
     end
@@ -147,6 +147,10 @@ function main()
     end
 
 %% the main part of the expriment
+    storedTone = zeros(15, 44);
+    storedDistractorLocation = zeros(15, 44);
+    storedSOA = zeros(15, 44);
+    storedResponse = zeros(15, 44);
     % for 15 blocks
     for block = 1:15
         % generate this block's trial condition
@@ -237,13 +241,20 @@ function main()
             %%%%%%%%%%%%%
             % save data %
             %%%%%%%%%%%%%
-            % TODO
+            storedTone(block, trialIndex) = trial.tone;
+            storedDistractorLocation(block, trialIndex) = trial.distractorLocation + 1;
+            storedSOA(block, trialIndex) = trial.SOA;
+            storedResponse(block, trialIndex) = response;
         end
         % one block has over, give participant some time to rest
         DrawFormattedText(w, 'You can have a rest as you like\nPress any key to continue', 'center', 'center', [255 255 255]);
         Screen('Flip', w);
         pause;
     end
+    xlswrite('data.xls', storedResponse, 1);
+    xlswrite('data.xls', storedTone, 2);
+    xlswrite('data.xls', storedSOA, 3);
+    xlswrite('data.xls', storedDistractorLocation, 4);
     % end of the experiment
     closeDown();
 end

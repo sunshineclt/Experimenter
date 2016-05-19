@@ -7,6 +7,6 @@ function colorChangeInterval = generateWithinTrialCondition(specialTrialIndex)
     colorChangeInterval(8:14) = 0.1;
     colorChangeInterval(15:19) = 0.15;
     colorChangeInterval = Shuffle(colorChangeInterval);
-    colorChangeInterval(specialTrialIndex + 2:21) = colorChangeInterval(specialTrialIndex:19);
-    colorChangeInterval(specialTrialIndex:specialTrialIndex + 1) = 0.15;
+    colorChangeInterval(specialTrialIndex + 1:21) = colorChangeInterval(specialTrialIndex -1:19);
+    colorChangeInterval(specialTrialIndex - 1:specialTrialIndex) = 0.15;
 end

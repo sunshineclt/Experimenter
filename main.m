@@ -1,6 +1,6 @@
 function main()
 %% some prepare work
-    [w, wrect] = setUp(true);
+    [w, wrect, userInfo] = setUp(true);
     global SCREEN_SIZE_INCH VIEW_DISTANCE
     tone = setUpSound();
 %% all the callback needed by this expriment
@@ -150,9 +150,11 @@ function main()
     storedSOA = zeros(15, 44);
     storedResponse = zeros(15, 44);
     % for 15 blocks
-    for block = 1:15
+    for block = 1:16
         % generate this block's trial condition
         trials = generateTrialCondition();
+        % the answer is correct's count
+        correctCount = 0;
         % for 44 trials in one block
         for trialIndex = 1:44
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -171,8 +173,8 @@ function main()
             % prepare needed graphic object %
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % instantialize the fixationPoint and set its center
-            fixationPoint = PCFixationPoint(w, PCdeg2pix(0.5, SCREEN_SIZE_INCH, VIEW_DISTANCE),...
-                PCdeg2pix(0.5, SCREEN_SIZE_INCH, VIEW_DISTANCE), PCFixationPointType.oval);
+            fixationPoint = PCFixationPoint(w, PCdeg2pix(0.3, SCREEN_SIZE_INCH, VIEW_DISTANCE),...
+                PCdeg2pix(0.3, SCREEN_SIZE_INCH, VIEW_DISTANCE), PCFixationPointType.oval);
             fixationPoint.center = PCPoint(wrect(3) / 2, wrect(4) / 2);        
             % set up the leftDisks and rightDisks
             leftDisks = setUpDisks(w, fixationPoint.center.x - PCdeg2pix(3.75, SCREEN_SIZE_INCH, VIEW_DISTANCE), fixationPoint.center.y);
@@ -190,7 +192,7 @@ function main()
             % set up the flow using PCRunloop %
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % instantialize a PCRunloop (a trial last for 3.1s)
-            runloop = PCRunloop(@(obj)GetSecs() - obj.startTime > 3.1, @()Screen('Flip', w));
+            runloop = PCRunloop(@(obj)GetSecs() - obj.startTime > 3.2, @()Screen('Flip', w));
             % register esc_pressed event to runloop, when fired it caused
             % the experiment to quit
             escPressed = PCEvent('esc_pressed', PCKeyboardPressedFireJudgerBuilder('escape'));
@@ -207,25 +209,21 @@ function main()
             for changeIndex = 1:21
                 % the next change will be happened after certain interval
                 time = time + colorChangeInterval(changeIndex);
-                % if this is the last change(21), it means end of trial
-                % rather than color change
-                if changeIndex ~= 21
-                    event = PCEvent(sprintf('%d_show_disk', changeIndex + 1), PCTimeReachedFireJudgerBuilder(time));
-                    % if this is the special change (target to be shown)
-                    % then the color change's position need to be specified
-                    % and the two target_show events need to be registered
-                    if changeIndex ~= specialChangeIndex
-                        runloop.register(event, @()changeColorAndShowAllDisks(-1));
-                    else
-                        runloop.register(event, @()changeColorAndShowAllDisks(trial.distractorLocation));
-                        runloop.register(PCEvent('first_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125)), @()showFirstTarget);
-                        runloop.register(PCEvent('second_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125 + abs(trial.SOA))), @()showSecondTarget);                   
-                    end
+                event = PCEvent(sprintf('%d_show_disk', changeIndex + 1), PCTimeReachedFireJudgerBuilder(time));
+                % if this is the special change (target to be shown)
+                % then the color change's position need to be specified
+                % and the two target_show events need to be registered
+                if changeIndex ~= specialChangeIndex
+                    runloop.register(event, @()changeColorAndShowAllDisks(-1));
                 else
-                    event = PCEvent('end_of_trial', PCTimeReachedFireJudgerBuilder(time));
-                    runloop.register(event, @()trialEnd);
+                    runloop.register(event, @()changeColorAndShowAllDisks(trial.distractorLocation));
+                    runloop.register(PCEvent('first_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125)), @()showFirstTarget);
+                    runloop.register(PCEvent('second_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125 + abs(trial.SOA))), @()showSecondTarget);                   
                 end
             end
+            time = time + 0.1;
+            event = PCEvent('end_of_trial', PCTimeReachedFireJudgerBuilder(time));
+            runloop.register(event, @()trialEnd);            
             % end of event register
             
             % run the whole flow
@@ -243,16 +241,26 @@ function main()
             storedDistractorLocation(block, trialIndex) = trial.distractorLocation + 1;
             storedSOA(block, trialIndex) = trial.SOA;
             storedResponse(block, trialIndex) = response;
+            if ((trial.SOA < 0) && (response == 1)) || ((trial.SOA > 0) && (response == 2))
+                correctCount = correctCount + 1;
+            end
         end
         % one block has over, give participant some time to rest
-        DrawFormattedText(w, 'You can have a rest as you like\nPress any key to continue', 'center', 'center', [255 255 255]);
+        DrawFormattedText(w, sprintf('Your correct rate is %d%%\nPress space to continue', round(correctCount / 44 * 100)), 'center', 'center', [255 255 255]);
         Screen('Flip', w);
-        pause;
+        while true
+            [~,~,KC] = KbCheck;
+            if KC(KbName('space'))
+                break;
+            end
+        end
     end
-    xlswrite('data.xls', storedResponse, 1);
-    xlswrite('data.xls', storedTone, 2);
-    xlswrite('data.xls', storedSOA, 3);
-    xlswrite('data.xls', storedDistractorLocation, 4);
+    
+    filename = sprintf('./data/%s_%s_data.xls', userInfo{1}, userInfo{2});
+    xlwrite(filename, storedResponse, 1);
+    xlwrite(filename, storedTone, 2);
+    xlwrite(filename, storedSOA, 3);
+    xlwrite(filename, storedDistractorLocation, 4);
     % end of the experiment
     closeDown();
 end

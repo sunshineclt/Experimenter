@@ -19,6 +19,7 @@ SCREEN_SIZE_INCH = 19;
 VIEW_DISTANCE = 80;
 Screen('Preference', 'SkipSyncTests', 1);
 InitializeMatlabOpenGL;
+InitializePsychSound;
 if (isFullScreen)
     [w, rect]=Screen('OpenWindow', 0, [80 80 80]);
 else

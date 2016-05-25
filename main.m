@@ -2,7 +2,7 @@ function main()
 %% some prepare work
     [w, wrect, userInfo] = setUp(true);
     global SCREEN_SIZE_INCH VIEW_DISTANCE
-    tone = setUpSound();
+    pahandle = setUpSound();
 %% all the callback needed by this expriment
     % show the fixationPoint (with flip)
     function showFixationPoint()
@@ -100,7 +100,7 @@ function main()
         runloop.register(PCEvent('m_pressed', PCKeyboardPressedFireJudgerBuilder('m')), @()mPressed);
         % if this trial contains the tone, then play it
         if trial.tone
-            Snd('play', tone);
+            PsychPortAudio('Start', pahandle);
         end
         % draw the disks and fixationPoint with flip
         showAllDisksAndFixationPoint();

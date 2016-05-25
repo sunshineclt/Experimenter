@@ -1,8 +1,5 @@
-function tone = setUpSound()
-% SETUPSOUND generate the sound used in this expriment
-% because the first play of Snd('play', sound) need some time to load Snd,
-% I'don't want the main expriment to be disturbed by this delay, so after
-% setup I'll play it for the first time.
+function pahandle = setUpSound()
+% SETUPSOUND set up the PsychPortAudio and load the needed tone
 
     sf = 44100;
     t = 0.06;
@@ -16,7 +13,8 @@ function tone = setUpSound()
     sustain = ones(1, (length(tone)-2*length(gate))); 
     envelope = [gate, sustain, offsetgate];
     smoothed_tone = envelope .* tone;
-    Snd('play', smoothed_tone);
+    pahandle = PsychPortAudio('Open');
+    PsychPortAudio('FillBuffer', pahandle, [smoothed_tone;zeros(size(smoothed_tone))]);
     
 end
 

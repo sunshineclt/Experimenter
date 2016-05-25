@@ -195,7 +195,11 @@ function main()
             runloop = PCRunloop(@(obj)GetSecs() - obj.startTime > 3.2, @()Screen('Flip', w));
             % register esc_pressed event to runloop, when fired it caused
             % the experiment to quit
-            escPressed = PCEvent('esc_pressed', PCKeyboardPressedFireJudgerBuilder('escape'));
+            try
+                escPressed = PCEvent('esc_pressed', PCKeyboardPressedFireJudgerBuilder('escape'));
+            catch
+                escPressed = PCEvent('esc_pressed', PCKeyboardPressedFireJudgerBuilder('esc'));
+            end
             runloop.register(escPressed, @()forceQuit);
             % register begin event to runloop, it will be fired immediately
             % when the runloop begins, and it will show a fixationPoint

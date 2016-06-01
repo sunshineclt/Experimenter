@@ -29,7 +29,7 @@ Screen('TextFont', w, 'Calibri');
 Screen('TextSize', w, 18);
 ListenChar(2);
 HideCursor;
-DrawFormattedText(w, 'you will see 18 distractor disks\n and you will see two targets\nYou need to judge which target is presented first\nIf the left target is presented first, you should press "Z", otherwise you should press "Z"\n The first block is a practice block', 'center', 'center', [255 255 255]);
+DrawFormattedText(w, 'you will see 18 distractor disks\n and you will see two targets\nYou need to judge which target is presented first\nIf the left target is presented first, you should press "Z", otherwise you should press "M"\n The first block is a practice block', 'center', 'center', [255 255 255]);
 Screen('Flip', w);
 while true
     [~,~,KC] = KbCheck;

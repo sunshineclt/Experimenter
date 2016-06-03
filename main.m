@@ -261,10 +261,10 @@ function main()
     end
     
     filename = sprintf('./data/%s_%s_data.xls', userInfo{1}, userInfo{2});
-    xlwrite(filename, storedResponse, 1);
-    xlwrite(filename, storedTone, 2);
-    xlwrite(filename, storedSOA, 3);
-    xlwrite(filename, storedDistractorLocation, 4);
+    xlwrite(filename, storedResponse, 'response');
+    xlwrite(filename, storedTone, 'tone');
+    xlwrite(filename, storedSOA, 'SOA');
+    xlwrite(filename, storedDistractorLocation, 'distractorLocation');
     % end of the experiment
     closeDown();
 end

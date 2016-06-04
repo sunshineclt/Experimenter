@@ -16,7 +16,7 @@
 
 ## 注意事项
 - setUp中引入了第三方JAVA包MatlabExcelMac，这是用于解决在Mac下Matlab自带函数xlswrite会出现的问题（会发生无法写入xls而写入csv的问题，csv中没有sheet，不适合本实验的结果记录），此三方库下载于MathWorks官方网站，用法与xlswrite几乎相同，只不过函数名是xlwrite
-- 程序依赖PCKit，使用时需将PCKit add PATH入MATLAB
+- 程序依赖[PCKit](https://github.com/sunshineclt/PCKit)，使用时需将PCKit add PATH入MATLAB
 - 为防止出现不同电脑esc键编码的不同（有些电脑是esc有些电脑是escape），程序采用了try catch的方式来避免此问题
 
 ## 实验思路

@@ -82,6 +82,12 @@ function main()
         % draw the disks and fixationPoint with flip
         showAllDisksAndFixationPoint();
     end
+    function playSound()
+        % if this trial contains the tone, then play it
+        if trial.tone
+            PsychPortAudio('Start', pahandle);
+        end
+    end
     % show the first target (and also register 'z' and 'm' keyboard
     % event)(and also play the synchronized sound if needed)
     function showFirstTarget()
@@ -98,10 +104,6 @@ function main()
         % the trial
         runloop.register(PCEvent('z_pressed', PCKeyboardPressedFireJudgerBuilder('z')), @()zPressed);
         runloop.register(PCEvent('m_pressed', PCKeyboardPressedFireJudgerBuilder('m')), @()mPressed);
-        % if this trial contains the tone, then play it
-        if trial.tone
-            PsychPortAudio('Start', pahandle);
-        end
         % draw the disks and fixationPoint with flip
         showAllDisksAndFixationPoint();
     end
@@ -221,6 +223,7 @@ function main()
                     runloop.register(event, @()changeColorAndShowAllDisks(-1));
                 else
                     runloop.register(event, @()changeColorAndShowAllDisks(trial.distractorLocation));
+                    runloop.register(event, @()playSound);
                     runloop.register(PCEvent('first_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125)), @()showFirstTarget);
                     runloop.register(PCEvent('second_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125 + abs(trial.SOA))), @()showSecondTarget);                   
                 end

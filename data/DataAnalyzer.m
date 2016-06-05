@@ -1,6 +1,12 @@
 % this script is for data analyze of a single participants
 % it conduct a logit fitting, draw a graph and calculate the PSS and JND
 
+javaaddpath('./MatlabExcelMac/Archive/jxl.jar');
+javaaddpath('./MatlabExcelMac/Archive/MXL.jar');
+
+import mymxl.*;
+import jxl.*;   
+
 % read data
 storedResponse = xlsread('1_1_data.xls', 'response');
 storedTone = xlsread('1_1_data.xls', 'tone');

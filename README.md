@@ -1,5 +1,8 @@
 # Matlab大作业
 此Matlab程序实现了Audiovisual events capture attention/ Evidence from temporal order judgments (Van et al., 2008)文章的实验1。 
+此README在Github中阅读体验更佳（链接可以生效）
+[Github地址](https://github.com/sunshineclt/Experimenter)
+[PCKit Github地址](https://github.com/sunshineclt/PCKit)
 
 ## 实验程序结构
 - 实验主脚本为[main.m](./main.m)
@@ -12,7 +15,16 @@
 - [closeDown.m](./closeDown.m)为程序结束时所还原设置（显示鼠标等）
 - [MatlabExcelMac](./MatlabExcelMac/)是第三方写xls的JAVA包
 - [data](./data/)是保存数据并包含数据分析的目录
-- [data/DataAnalyzer.m](./data/DataAnalyzer.m)是数据分析的脚本
+- [DataAnalyzer.m](./data/DataAnalyzer.m)是拟合分析的脚本（包括画拟合图）
+- [DataAnalyzer.sps](./data/DataAnalyzer.sps)是在SPSS中做了四个重复测量方差分析的SPSS代码
+- [PictureDrawer.m](./data/PictureDrawer.m)是画三个重复测量方差分析图的脚本
+
+### 实验数据结构
+- [raw data](./data/1_1_data.xls)为我自己被试的数据
+- [fitted.fig](./data/fitted.fig)是拟合图
+- [JND_total.xlsx](./data/JND_total.xlsx)是我组五人四种条件下的JND
+- [PSS_total.xlsx](./data/PSS_total.xlsx)是我组五人四种条件下的PSS
+- [JND_PSS_Slope.xlsx](./data/JND_PSS_Slope.xlsx)是我组五人四种条件下的JND、PSS和Slope
 
 ## 注意事项
 - setUp中引入了第三方JAVA包MatlabExcelMac，这是用于解决在Mac下Matlab自带函数xlswrite会出现的问题（会发生无法写入xls而写入csv的问题，csv中没有sheet，不适合本实验的结果记录），此三方库下载于MathWorks官方网站，用法与xlswrite几乎相同，只不过函数名是xlwrite

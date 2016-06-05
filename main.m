@@ -223,7 +223,7 @@ function main()
                     runloop.register(event, @()changeColorAndShowAllDisks(-1));
                 else
                     runloop.register(event, @()changeColorAndShowAllDisks(trial.distractorLocation));
-                    runloop.register(event, @()playSound);
+                    runloop.register(PCEvent('playSound', PCTimeReachedFireJudgerBuilder(time)), @()playSound);
                     runloop.register(PCEvent('first_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125)), @()showFirstTarget);
                     runloop.register(PCEvent('second_target_show', PCTimeReachedFireJudgerBuilder(time + 0.125 + abs(trial.SOA))), @()showSecondTarget);                   
                 end
